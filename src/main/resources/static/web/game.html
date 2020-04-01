@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>game</title>
+    <style>
+        #shipLocationGrid, #salvoLocationGrid {
+            width: fit-content;
+            height: fit-content;
+        }
+
+        span{
+            display: inline-block;
+        }
+
+        div {
+            width: 50px;
+            height: 50px;
+            border:1px solid #000;
+        }
+        .red {
+            background: red;
+        }
+        .blue{
+            background-color: blue;
+        }
+        .green{
+            background-color: green;
+        }
+        .orange{
+            background-color: orange;
+        }
+
+    </style>
+</head>
+<>
+
+<p id="game"></p>
+<p id="player"></p>
+<p id="opponent"></p>
+<p>Ship Location</p>
+<p id="turnOpponent"></p>
+<div id="shipLocationGrid">
+</div>
+<p>Salvo Location</p>
+<p id="turnPlayer"></p>
+<div id="salvoLocationGrid"></div>
+
+
+
+</body>
+
+<script src="https://code.jquery.com/jquery-2.2.0.js"></script>
+<script src="game.js"></script>
+</html>

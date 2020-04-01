@@ -24,6 +24,7 @@ $(function() {
 
     }
 
+
 // handler for when user clicks add person
 
     function addPlayer() {
