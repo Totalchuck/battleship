@@ -9,7 +9,15 @@ let turnOpponent = document.getElementById("turnOpponent")
 let alphaGrid = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 let numGrip = [1,2,3,4,5,6,7,8,9,10]
 let GamePlayerId =[];
+let username = 0;
 
+
+//log Out
+
+document.getElementById("logOut").onclick = function() {logOut()};
+
+       function logOut() {
+ $.post("/api/logout").done(function() { console.log("logged out") ; window.location = "/web/games.html" })  }
 
 
 
@@ -35,6 +43,8 @@ function displayPlayerShipsAndSalvo(gameId) {
             console.log(myArray);
             let shipsLocations = []
             let salvoLocations = []
+
+
 
             myArray.ships.forEach(ship => ship.location.forEach(shipLocation => shipsLocations.push(shipLocation)))
             myArray.salvos.forEach(salvo => salvo.salvoLocations.forEach(salvoLocation => salvoLocations.push(salvoLocation)))
@@ -95,9 +105,28 @@ function getParameterByName(name, url) {
 }
 
 
+    function getUserName() {
+
+             $.get("/username")
+                .then(function (data) {
+                    let myData = JSON.stringify(data, null, 2);
+                    let myArray = JSON.parse(myData)
+                    console.log("username()")
+                    username = myArray.email
+
+                }).then(function() {
+
+                }).then(function() {
+
+
+})}
+
+
+
 drawGrid(shipLocationGrid, "ship")
 drawGrid(salvoLocationGrid, "salvo")
 displayPlayerShipsAndSalvo(getParameterByName('gp'));
-console.log(GamePlayerId)
+getUserName()
+
 
 

@@ -10,4 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @RepositoryRestResource
 public interface PlayerRepository extends JpaRepository<Player, Long> {
+
+    Player findByEmail(String email) ;
 }
+

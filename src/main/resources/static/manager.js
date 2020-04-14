@@ -10,7 +10,7 @@ $(function() {
 // load and display JSON sent by server for /players
     function loadData() {
 
-        $.get("/players")
+        $.get("/rest/players")
             .done(function(data) {
 
                 showOutput(JSON.stringify(data, null, 2));
@@ -52,7 +52,7 @@ $(function() {
             },
 
             dataType: "text",
-            url: "/players",
+            url: "/rest/players",
             data: JSON.stringify({ "email": userName })
 
         })

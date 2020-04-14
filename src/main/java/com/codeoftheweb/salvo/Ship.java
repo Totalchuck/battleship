@@ -33,17 +33,11 @@ public class Ship {
     private List<String> location = new ArrayList<>();
 
 
-    // @Embeddable
-    //    public class Location {
-    //        public Location() {
-    //            List<String> Location = getLocation();
-    //        }
-    //        public List<String>;
-    //    }
-
-
-
     public Ship() {
+    }
+
+    public Ship(String shipType) {
+        this.shipType = shipType;
     }
 
     public Ship(String shipType, String alphaNumLocation, boolean horizontal ) {

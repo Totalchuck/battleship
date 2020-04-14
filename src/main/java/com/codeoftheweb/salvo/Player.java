@@ -2,6 +2,7 @@ package com.codeoftheweb.salvo;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jdk.internal.net.http.common.Utils;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -9,6 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 public class Player {
@@ -18,6 +21,7 @@ public class Player {
     @GenericGenerator(name = "native", strategy = "native")
     private long Id;
     private String email;
+    private String password;
 
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
@@ -35,8 +39,21 @@ public class Player {
 
     public Player(String mail) {
         this.email = mail;
+        this.password = "not defined";
 
 
+
+    }
+
+    public Player(String mail, String password) {
+        this.email = mail;
+        this.password = passwordEncoder().encode(password) ;
+
+
+    }
+
+    private PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     public long getId() {
@@ -56,7 +73,7 @@ public class Player {
         this.email = email;
     }
 
-@JsonIgnore
+//@Jsonignogre
     public Set<GamePlayer> getGamePlayers() {
         return gamePlayers;
     }
@@ -78,7 +95,14 @@ public class Player {
         return score;
     }
 
+    public String getPassword() {
 
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
 
 

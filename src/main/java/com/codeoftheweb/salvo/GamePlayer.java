@@ -98,6 +98,10 @@ public class GamePlayer {
         return game.getId();
     }
 
+    public String getPlayerMail () {
+        return player.getEmail();
+    }
+
 
 
 
@@ -106,7 +110,7 @@ public class GamePlayer {
         this.game = game;
     }
 
-
+@JsonIgnore
       public Player getPlayer() {
          return player;
        }
