@@ -32,6 +32,9 @@ public class Ship {
     @Column(name="Location")
     private List<String> location = new ArrayList<>();
 
+    private boolean sunk;
+
+    private int remainingLife;
 
     public Ship() {
     }
@@ -40,21 +43,13 @@ public class Ship {
         this.shipType = shipType;
     }
 
-    public Ship(String shipType, String alphaNumLocation, boolean horizontal ) {
+    public Ship(String shipType, List<String> location)  {
         this.shipType = shipType;
-        List<String> grid = listGrid();
-        int location = grid.indexOf(alphaNumLocation);
-        this.location.add(grid.get(location));
-        if (horizontal && location > 10 && location < 90) {
-            this.location.add(grid.get(location-10));
-            this.location.add(grid.get(location+10));
-        } else {
-            this.location.add(grid.get(location-1));
-            this.location.add(grid.get(location+1));
-        }
-
-
+        this.location = location;
+        this.sunk=false;
+        this.remainingLife = location.size();
     }
+
 
     public long getId() {
         return Id;
@@ -81,6 +76,28 @@ public class Ship {
         this.gamePlayer = gamePlayer;
     }
 
+    public boolean isTheShipSunk(List<String> salvoLocations) {
+       remainingLife = location.size();
+        this.location.forEach(location -> salvoLocations.forEach(salvoLocation ->
+        {
+            if (location.equals(salvoLocation)) {
+              remainingLife--;
+                System.out.println(salvoLocation+ "correspond to a place in the ship there is life" + remainingLife);
+            }}));
+
+        if (remainingLife == 0) {
+            sunk = true;
+        }
+        return sunk;
+    }
+
+    public int getRemainingLife() {
+        return remainingLife;
+    }
+
+    public boolean getSunk(){
+        return sunk;
+    }
     public List<String> listGrid() {
         List<String> gridLocation = new ArrayList<>();
         String[] alpha = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};

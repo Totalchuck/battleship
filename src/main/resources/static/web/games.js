@@ -3,6 +3,7 @@ let li = document.createElement("li")
 let myRealData =[];
 let table = document.getElementById("table")
 let username = 0;
+let opponentInfo = [];
 
 
 
@@ -21,12 +22,16 @@ let username = 0;
                 { console.log(game.gamePlayers.length);
 
                     if (gamePlayer.playerMail == username) {
-                        createNewLi(gamePlayer.gameId, game.time, gamePlayer.playerMail);
+                        createNewLi(gamePlayer.gameId,gamePlayer.Id, gamePlayer.opponentName);
                         let GP = gamePlayer.id;
                         createRejoinGameBtn(GP)}
 
+
+
+
+
                     else if (gamePlayer.playerMail != username && game.gamePlayers.length == 1 ) {
-                        createNewLi(gamePlayer.gameId, game.time, "opponent") ;
+                        createNewLi(gamePlayer.gameId,gamePlayer.Id, game.time) ;
                         let gameId = gamePlayer.gameId;
                         console.log(gamePlayer.gameId)
                         createJoinGameBtn(gamePlayer.gameId)}
@@ -91,11 +96,7 @@ function joinExistingGame(email, gameId) {
 
  }
 
-function placeShip(email, ships, gamePlayerId) {
-     $.post("http://localhost:8080/api/games/players/" + gamePlayerId + "/ships", { email: email, shipType : ships, gamePlayerId : gamePlayerId})
-     .done(function() { console.log("Game joined") ; window.location.reload(true) })
 
- }
 
 
     function playerEmail (x) {
@@ -104,18 +105,15 @@ function placeShip(email, ships, gamePlayerId) {
         }
     }
 
-    function createNewLi(gameId, time, opponent) {
+    function createNewLi(gameId, gamePlayerId, opponent) {
         let li = document.createElement("li")
         ul.appendChild(li);
         li.setAttribute("id", gameId)
+        displayGameAndOpponentInformations(gameId, gamePlayerId)
+        console.log(opponent)
+        console.log(displayGameAndOpponentInformations(gameId, gamePlayerId))
         li.innerHTML = "game with Id nr " + gameId + " created at " + time +  " playing against "  + opponent;
-
-
-
 }
-
-    function test() {
-    $('#joinGame').on('click', () => { console.log("ca marche") })}
 
     function createJoinGameBtn (gameId) {
     let button = document.createElement("button")
@@ -151,19 +149,38 @@ function placeShip(email, ships, gamePlayerId) {
 
 
     function loadGameData() {
-
-
           $.get("/api/games_view")
             .then(function (data) {
                 let myData = JSON.stringify(data, null, 2);
                 let myArray = JSON.parse(myData)
 
-
-
-                //myArray.forEach(game => createNewLi(game))
                 myRealData = myArray;
             })
     }
+
+
+//look for opponent informations
+function displayGameAndOpponentInformations (gameId, playerId) {
+
+let test = null
+    $.get("http://localhost:8080/api/games_view/" + gameId).done(function(data) {
+        let myData = JSON.stringify(data);
+        let myArray = JSON.parse(myData)
+          myArray.gamePlayers.forEach(gamePlayer => {
+            if (gamePlayer.id != playerId) {
+                opponentInfo = gamePlayer;
+                console.log(gamePlayer)
+              return gamePlayer
+            }
+        })
+    }).fail(function( err ) {
+          console.log("error")
+           });
+}
+
+
+
+
 
     function getUserName() {
 

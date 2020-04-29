@@ -49,6 +49,7 @@ public class Game {
     }
 
 
+
 @JsonIgnore
      public List <Player> getPlayers() {
          return gamePlayers.stream().map(sub -> sub.getPlayer()).collect(Collectors.toList());

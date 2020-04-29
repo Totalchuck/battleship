@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class SalvoApplication {
@@ -88,29 +90,27 @@ public class SalvoApplication {
 			myFifthGamePlayer.setGame(myThirdGame);
 
 
-			Ship myFirstCruiser = new Ship("Cruiser", "B5", true);
-			Ship myFirstDestroyer = new Ship("Destroyer","G6", false);
-			myFirstCruiser.setGamePlayer(myFirstGamePlayer);
-			myFirstDestroyer.setGamePlayer(myFirstGamePlayer);
+			List<String> locations = new ArrayList<>();
+			locations.add("A1");
+			locations.add("A2");
+			locations.add("A3");
+			Ship myFirstPlayerCruiser = new Ship ("Cruiser",  locations);
 
-			Ship mySecondCruiser = new Ship("Cruiser", "F2", true);
-			Ship mySecondDestroyer = new Ship("Destroyer","D6", false);
-			mySecondCruiser.setGamePlayer(myThirdGamePlayer);
-			mySecondDestroyer.setGamePlayer(myThirdGamePlayer);
+			List<String> locations2 = new ArrayList<>();
+			locations2.add("C4");
+			locations2.add("C5");
 
-			Ship myThirdBattleship = new Ship("Bettleship", "G5", true);
-			myThirdBattleship.setGamePlayer(myFourthGamePlayer);
+			Ship myFirstPlayerDestroyer = new Ship ("Destroyer",  locations2);
+
+
 
 			Salvo myFirstSalvo = new Salvo();
-			Salvo mySecondSalvo = new Salvo();
+
 
 			myFirstSalvo.setGamePlayer(myFirstGamePlayer);
-			mySecondSalvo.setGamePlayer(myThirdGamePlayer);
+
 
 			myFirstSalvo.fireSalvo("B7");
-			mySecondSalvo.fireSalvo("G5");
-			myFirstSalvo.fireSalvo("F8");
-			mySecondSalvo.fireSalvo("D6");
 
 
 			playerRepository.save(myFirstPlayer);
@@ -132,19 +132,15 @@ public class SalvoApplication {
 			scoreRepository.save(myThirdGamePlayerScore);
 			scoreRepository.save(myFourthGamePlayerScore);
 
-			shipRepository.save(myFirstCruiser);
-			shipRepository.save(myFirstDestroyer);
-			shipRepository.save(mySecondCruiser);
-			shipRepository.save(mySecondDestroyer);
-			shipRepository.save(myThirdBattleship);
+
 
 			salvoRepository.save(myFirstSalvo);
-			salvoRepository.save(mySecondSalvo);
 
+			myFirstPlayerCruiser.setGamePlayer(myFirstGamePlayer);
+			shipRepository.save(myFirstPlayerCruiser);
 
-
-
-
+			myFirstPlayerDestroyer.setGamePlayer(myFirstGamePlayer);
+			shipRepository.save(myFirstPlayerDestroyer);
 
 		};
 

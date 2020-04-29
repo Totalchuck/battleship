@@ -23,9 +23,7 @@ public class Salvo {
     @Column(name="salvoLocations")
     private List<String> salvoLocations = new ArrayList<>();
 
-    @ElementCollection
-    @Column(name="salvoLocationsPerTurn")
-    private List<String> salvoLocationsPerTurn = new ArrayList<>();
+
 
     private int turnNumber;
 
@@ -37,8 +35,11 @@ public class Salvo {
 
     }
 
-    public long getId() {
-        return Id;
+    public Salvo(List<String> location, int turn) {
+
+        this.turnNumber = turn;
+        this.salvoLocations = location;
+
     }
 
     @JsonIgnore
@@ -46,13 +47,8 @@ public class Salvo {
         return gamePlayer;
     }
 
-
     public List<String> getSalvoLocations() {
         return salvoLocations;
-    }
-
-    public List<String> getSalvoLocationsPerTurn() {
-        return salvoLocationsPerTurn;
     }
 
     public int getTurnNumber() {
@@ -63,12 +59,16 @@ public class Salvo {
         this.salvoLocations = salvoLocations;
     }
 
+
+
+
+
     public void fireSalvo (String alphaNumLocation) {
         List<String> grid = listGrid();
         int location = grid.indexOf(alphaNumLocation);
         this.salvoLocations.add(grid.get(location));
         this.turnNumber++;
-        this.salvoLocationsPerTurn.add(grid.get(location) + " fired at turn " + this.turnNumber);
+
     }
 
     public void setGamePlayer(GamePlayer gamePlayer) {

@@ -7,6 +7,7 @@
         #shipLocationGrid, #salvoLocationGrid {
             width: fit-content;
             height: fit-content;
+            background-image : url("Pictures/sea.png")
         }
 
         span{
@@ -23,12 +24,43 @@
         }
         .blue{
             background-color: blue;
+
+
         }
+         .black{
+            background-color: black;
+            }
+
         .green{
             background-color: green;
         }
         .orange{
             background-color: orange;
+        }
+
+        div[placed="yellow"] {
+            background-color: yellow;
+        }
+
+          div[placed="orange"] {
+            background-color: orange;
+        }
+
+            div[salvo="orange"] {
+            background-color: orange;
+        }
+
+             div[hit="red"] {
+            background-color: red;
+        }
+
+               div[sunk="black"] {
+            background-color: grey;
+        }
+
+                 div[ship="carrierHor"] {
+            background-image: url("Picture/cruiserHor1.png");
+
         }
 
     </style>
@@ -38,11 +70,25 @@
 <p id="game"></p>
 <p id="player"></p>
 <p id="opponent"></p>
-<p>Ship Location</p>
+<p>Ship Location</p>1
+
+<span><button onclick="placingShip('carrier')" ondblclick="replacingShip('carrier')" id="carrier">Carrier</button></span>
+<span><button onclick="placingShip('battleship')" ondblclick="replacingShip('battleship')" id="battleship">Battleship</button></span>
+<span><button onclick="placingShip('cruiser')" ondblclick="replacingShip('cruiser')" id="cruiser">Cruiser</button></span>
+<span><button onclick="placingShip('submarine')" ondblclick="replacingShip('submarine')" id="submarine">Submarine</button></span>
+<span><button onclick="placingShip('destroyer')" ondblclick="replacingShip('destroyer') "id="destroyer">Destroyer</button></span>
+
+<button onclick="sendShip(shipsArray)">"Ready</button>
+
 <p id="turnOpponent"></p>
 <div id="shipLocationGrid">
 </div>
 <p>Salvo Location</p>
+
+<button onclick="placingSalvos()">Place Salvoes</button>
+
+<button onclick="sendSalvos(salvosArray)">Shoot !</button>
+
 <p id="turnPlayer"></p>
 <div id="salvoLocationGrid"></div>
 
