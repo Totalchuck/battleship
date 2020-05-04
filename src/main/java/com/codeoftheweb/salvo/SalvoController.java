@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.Path;
 import java.security.Principal;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -37,14 +37,17 @@ public class SalvoController {
     private SalvoRepository salvoRepository;
 
 
+
     @RequestMapping("/games_view")
     public List<Game> getAll() {
+
         return gameRepository.findAll();
     }
 
 
     @RequestMapping("/games_view/{gamesId}")
     public Game getGame(@PathVariable int gamesId) {
+
         return gameRepository.findAll().get(gamesId - 1);
     }
 
@@ -56,10 +59,26 @@ public class SalvoController {
 
     @RequestMapping("/gamePlayer_view/{gamesId}")
     public Optional<GamePlayer> getGamePlayer(@PathVariable long gamesId) {
-        Principal principal = SecurityContextHolder.getContext().getAuthentication();
-        Player myUser = currentUserName(principal);
-        return gamePlayerRepository.findById(gamesId);
+
+        GamePlayer myGamePlayer = gamePlayerRepository.findById(gamesId).get();
+
+        if (myGamePlayer != null) {
+            if (loggedUser() == myGamePlayer.getPlayer()) {
+                return gamePlayerRepository.findById(gamesId);
+            } else {
+                return null;
+            }
+
+        } else {
+            return null;
+        }
+
     }
+
+
+
+
+
 
     @RequestMapping(value = "/username", method = RequestMethod.GET)
     @ResponseBody
@@ -153,12 +172,13 @@ public class SalvoController {
         List listSalvosHit = new ArrayList();
 
         List<String> shipsSunk = new ArrayList<>();
+        System.out.println(Math.sqrt(Math.pow(thePlayer.getOpponentTurn() - thePlayer.getTurnGame(),2) ));
 
         if (email.isEmpty()) {
             return new ResponseEntity<>("No name given", HttpStatus.UNAUTHORIZED);
         } else if (gamePlayerRepository.findById(gamePlayerId) == null) {
             return new ResponseEntity<>("This GamePlayer Id does not exist", HttpStatus.UNAUTHORIZED);
-        } else if (/*myOpponent.getTurnGame() == thePlayer.getTurnGame()*/ true){
+        } else if ( thePlayer.getOpponentTurn() >= thePlayer.getTurnGame()){
 
 
             Salvo newSalvo = new Salvo(locations, thePlayer.getTurnGame());
@@ -177,24 +197,33 @@ public class SalvoController {
                 }
             })));
 
+            //add the opponent sunk ship to an array in the class gamePlayer
             thePlayer.getOpponentShipsSunk().clear();
+
             myOpponent.setRemainingShips(5);
+
             myOpponent.getShips().forEach(ship->
             {if (ship.getSunk() == true) {
                 myOpponent.shipSunk();
                 ship.getLocation().forEach(location ->
-                { thePlayer.getOpponentShipsSunk().add(location);
+                    { thePlayer.getOpponentShipsSunk().add(location);
 
                 });}});
 
-
-            if(thePlayer.getOpponentShipsSunk().size() == 5) {
+            //check if the Player won the game and end the game
+            if(thePlayer.getOpponentShipsSunk().size() == 17) {
                 thePlayer.wonGame();
-                thePlayer.endGame();
-            } else if (thePlayer.getRemainingShips() ==0) {
-                thePlayer.endGame();
+                gameRepository.getOne(gamesId).setGameOver(true);
             }
 
+           //check if the Player has no remaining ship and the game is over
+           if (thePlayer.getRemainingShips() == 0 ) {
+                gameRepository.getOne(gamesId).setGameOver(true);
+            }
+
+
+
+            gameRepository.save(gameRepository.getOne(gamesId));
             salvoRepository.save(newSalvo);
             gamePlayerRepository.save(thePlayer);
             gamePlayerRepository.save(myOpponent);
@@ -211,13 +240,20 @@ public class SalvoController {
 
     }
 
-
+    //function to look for the opposite gamePlayer
     @RequestMapping("/gamePlayer/{gamesId}/{gamePlayerId}/opponent")
     public GamePlayer getOppositeGamePlayer(@PathVariable long gamesId, @PathVariable long gamePlayerId) {
         Optional<Game> myGame = gameRepository.findById(gamesId);
         List<GamePlayer> myOpponent = myGame.get().getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() != gamePlayerId).collect(Collectors.toList());
 
         return myOpponent.get(0);
+    }
+
+
+    public Player loggedUser(){
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        Player myUser = currentUserName(principal);
+        return myUser;
     }
 
 

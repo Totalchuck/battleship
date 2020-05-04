@@ -4,12 +4,14 @@ let myRealData =[];
 let table = document.getElementById("table")
 let username = 0;
 let opponentInfo = [];
-
+let opponentName = []
 
 
 //Player Informations
 
-    function getGamePlayerInformation() {
+   function getGamePlayerInformation() {
+   getUserName()
+
     $.get("/api/games_view")
     .then (function(data) {
         let myData = JSON.stringify(data, null, 2);
@@ -19,9 +21,9 @@ let opponentInfo = [];
 
         myArray.forEach(game =>
             game.gamePlayers.forEach(gamePlayer =>
-                { console.log(game.gamePlayers.length);
+                { if (gamePlayer.playerMail == username) {
+                        displayGameAndOpponentInformations(gamePlayer.Id, gamePlayer.id)
 
-                    if (gamePlayer.playerMail == username) {
                         createNewLi(gamePlayer.gameId,gamePlayer.Id, gamePlayer.opponentName);
                         let GP = gamePlayer.id;
                         createRejoinGameBtn(GP)}
@@ -31,7 +33,8 @@ let opponentInfo = [];
 
 
                     else if (gamePlayer.playerMail != username && game.gamePlayers.length == 1 ) {
-                        createNewLi(gamePlayer.gameId,gamePlayer.Id, game.time) ;
+                        createNewLi(gamePlayer.gameId,gamePlayer.Id, gamePlayer.playerMail) ;
+
                         let gameId = gamePlayer.gameId;
                         console.log(gamePlayer.gameId)
                         createJoinGameBtn(gamePlayer.gameId)}
@@ -110,9 +113,7 @@ function joinExistingGame(email, gameId) {
         ul.appendChild(li);
         li.setAttribute("id", gameId)
         displayGameAndOpponentInformations(gameId, gamePlayerId)
-        console.log(opponent)
-        console.log(displayGameAndOpponentInformations(gameId, gamePlayerId))
-        li.innerHTML = "game with Id nr " + gameId + " created at " + time +  " playing against "  + opponent;
+        li.innerHTML = "game with Id nr " + gameId + " created at playing against "  + opponent;
 }
 
     function createJoinGameBtn (gameId) {
@@ -149,20 +150,19 @@ function joinExistingGame(email, gameId) {
 
 
     function loadGameData() {
-          $.get("/api/games_view")
-            .then(function (data) {
+          $.get("/api/games_view").then(function (data) {
                 let myData = JSON.stringify(data, null, 2);
                 let myArray = JSON.parse(myData)
-
+                console.log("test")
                 myRealData = myArray;
             })
     }
 
 
 //look for opponent informations
+
 function displayGameAndOpponentInformations (gameId, playerId) {
 
-let test = null
     $.get("http://localhost:8080/api/games_view/" + gameId).done(function(data) {
         let myData = JSON.stringify(data);
         let myArray = JSON.parse(myData)
@@ -170,12 +170,11 @@ let test = null
             if (gamePlayer.id != playerId) {
                 opponentInfo = gamePlayer;
                 console.log(gamePlayer)
-              return gamePlayer
+                console.log(gamePlayer.playerMail)
+                opponentName = gamePlayer.playerMail
             }
         })
-    }).fail(function( err ) {
-          console.log("error")
-           });
+    })
 }
 
 
@@ -205,14 +204,14 @@ let test = null
 
         }
 
-    function loadPlayerScore() {
+ function loadPlayerScore() {
 
          $.get("http://localhost:8080/api/players_view")
              .done(function (data) {
                  let myData = JSON.stringify(data, null, 2);
                  let myArray = JSON.parse(myData)
-
-
+                console.log(myArray)
+                myArray.forEach(player => console.log(player.score + player.email))
                  myArray.forEach(player => createTable(player.email, sumScores(player.score)))
 
 
@@ -240,8 +239,6 @@ let test = null
 
 
     getGamePlayerInformation()
-
-
-    loadGameData()
-
     loadPlayerScore()
+
+

@@ -3,20 +3,13 @@ package com.codeoftheweb.salvo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
-import javax.persistence.OneToMany;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 
 
 @Entity
@@ -39,23 +32,16 @@ public class GamePlayer {
     @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
     Set<Salvo> salvos;
 
-
-
-
-
-
     @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
     Set<Ship> ships;
 
     @ElementCollection
-    @Column(name="salvoHitLocations")
+    @Column(name = "salvoHitLocations")
     private List<String> salvoHitLocations = new ArrayList<>();
 
     @ElementCollection
-    @Column(name="opponentShipsSunk")
+    @Column(name = "opponentShipsSunk")
     private List<String> opponentShipsSunk = new ArrayList<>();
-
-    private boolean gameEnd;
 
     private boolean gameWon;
 
@@ -64,9 +50,6 @@ public class GamePlayer {
     private int remainingShips;
 
     private String opponentName;
-
-
-
 
     public GamePlayer() {
         this.turnGame = 0;
@@ -78,22 +61,15 @@ public class GamePlayer {
         this.time = new Date();
         this.game = game;
         this.player = player;
-
         this.turnGame = 0;
-        this.gameEnd = false;
         this.gameWon = false;
         this.remainingShips = 5;
-        this.opponentName = null;
-
-
-
 
     }
 
     public long getId() {
         return id;
     }
-
 
     public Date getTime() {
         return time;
@@ -109,26 +85,43 @@ public class GamePlayer {
         return game;
     }
 
-
     public long getGameId() {
         return game.getId();
     }
-
-
 
     public String getPlayerMail() {
         return player.getEmail();
     }
 
     public String getOpponentName() {
-        return game.getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() != getId()).collect(Collectors.toList()).get(0).player.getEmail();
+
+        if (game.getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() != getId()).collect(Collectors.toList()).size() != 0) {
+            return game.getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() != getId()).collect(Collectors.toList()).get(0).getPlayerMail();
+        } else {
+            return "No Opponent";
+        }
+
     }
+
+
+
+    ;
+
+    public Set<Salvo> getOpponentSalvoes() {
+
+        if (game.getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() != getId()).collect(Collectors.toList()).size() != 0) {
+            return game.getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() != getId()).collect(Collectors.toList()).get(0).getSalvos();
+        } else {
+            return salvos;
+        }
+
+    }
+
+    ;
 
     public Set<Ship> getShips() {
         return this.ships;
     }
-
-
 
 
     public void setGame(Game game) {
@@ -155,16 +148,36 @@ public class GamePlayer {
         ships.add(ship);
     }
 
-    public void shipSunk () {
-        this.remainingShips --;
+    public void shipSunk() {
+        this.remainingShips--;
     }
 
-    public void setRemainingShips(int remainingShips){
+    public void setRemainingShips(int remainingShips) {
         this.remainingShips = remainingShips;
     }
 
     public int getTurnGame() {
         return this.turnGame;
+    }
+
+    public int getOpponentTurn() {
+
+        if (game.getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() != getId()).collect(Collectors.toList()).size() != 0) {
+            return game.getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() != getId()).collect(Collectors.toList()).get(0).getTurnGame();
+        } else {
+            return 0;
+        }
+
+    }
+
+    public boolean getAllShipsOpponentPlaces() {
+
+        if (game.getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() != getId()).collect(Collectors.toList()).size() != 0) {
+            return game.getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() != getId()).collect(Collectors.toList()).get(0).getAllShipsPlaced();
+        } else {
+            return false;
+        }
+
     }
 
     public void incrementTurnGame() {
@@ -175,7 +188,7 @@ public class GamePlayer {
         this.turnGame = turnGame;
     }
 
-    public void addSalvoHit (String location) {
+    public void addSalvoHit(String location) {
         salvoHitLocations.add(location);
     }
 
@@ -187,10 +200,6 @@ public class GamePlayer {
         return opponentShipsSunk;
     }
 
-    public boolean getGameEnd() {
-        return gameEnd;
-    }
-
     public boolean getGameWon() {
         return gameWon;
     }
@@ -199,21 +208,26 @@ public class GamePlayer {
         return opponentShipsSunk.size();
     }
 
-    public void endGame() {
-        this.gameEnd = true;
-
-    }
 
     public void wonGame() {
-        this.gameWon=true;
+        this.gameWon = true;
     }
 
     public int getRemainingShips() {
         return this.remainingShips;
     }
 
+    public void setOpponentName(String name) {
+        this.opponentName = name;
+    }
 
-
+    public boolean getAllShipsPlaced() {
+        if (ships.size() == 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 }

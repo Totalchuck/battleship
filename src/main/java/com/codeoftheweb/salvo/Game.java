@@ -22,8 +22,11 @@ public class Game {
     @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
     Set<Score> score;
 
+    public boolean gameOver;
+
 
     public Game() {
+        this.gameOver = false;
         this.time = new Date();
     }
 
@@ -36,7 +39,6 @@ public class Game {
     }
 
 
-
     @JsonIgnore
      public Set<GamePlayer> getGamePlayers() {
           return gamePlayers;
@@ -46,6 +48,7 @@ public class Game {
     public void addGamePlayer(GamePlayer gamePlayer) {
         gamePlayer.setGame(this);
         gamePlayers.add(gamePlayer);
+
     }
 
 
@@ -55,8 +58,21 @@ public class Game {
          return gamePlayers.stream().map(sub -> sub.getPlayer()).collect(Collectors.toList());
       }
 
+    @JsonIgnore
+    public List <String> getPlayersName() {
+        return gamePlayers.stream().map(sub -> sub.getPlayer()).collect(Collectors.toList()).stream().map(sub2 -> sub2.getEmail()).collect(Collectors.toList());
+    }
+
     public Set<Score> getScore() {
         return score;
+    }
+
+    public boolean getGameOver () {
+        return this.gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 }
 

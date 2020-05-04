@@ -10,6 +10,8 @@
             background-image : url("Pictures/sea.png")
         }
 
+
+
         span{
             display: inline-block;
         }
@@ -62,16 +64,44 @@
             background-image: url("Picture/cruiserHor1.png");
 
         }
+            div[cruiser="frontHor"] {
+            background-image: url("Pictures/Cruiser/cruiserFrontHor.png");
+
+        }
+         div[cruiser="midHor"] {
+            background-image: url("Pictures/Cruiser/cruiserMidHor.png");
+
+        }
+         div[cruiser="backHor"] {
+            background-image: url("Pictures/Cruiser/cruiserBackHor.png");
+
+        }
+        div[cruiser="frontVer"] {
+            background-image: url("Pictures/Cruiser/cruiserFrontVer.png");
+
+        }
+         div[cruiser="midVer"] {
+            background-image: url("Pictures/Cruiser/cruiserMidVer.png");
+
+        }
+         div[cruiser="backVer"] {
+            background-image: url("Pictures/Cruiser/cruiserBackVer.png");
+
+        }
+         #body {
+        background-image: url("Pictures/Background.png");
+        }
 
     </style>
 </head>
-<>
+<body id="body">
 <button onclick="logOut()" id="logOut" type="submit">Log out</button>
 <p id="game"></p>
 <p id="player"></p>
 <p id="opponent"></p>
 <p>Ship Location</p>1
 
+<span id="shipSelectionPannel">
 <span><button onclick="placingShip('carrier')" ondblclick="replacingShip('carrier')" id="carrier">Carrier</button></span>
 <span><button onclick="placingShip('battleship')" ondblclick="replacingShip('battleship')" id="battleship">Battleship</button></span>
 <span><button onclick="placingShip('cruiser')" ondblclick="replacingShip('cruiser')" id="cruiser">Cruiser</button></span>
@@ -79,10 +109,12 @@
 <span><button onclick="placingShip('destroyer')" ondblclick="replacingShip('destroyer') "id="destroyer">Destroyer</button></span>
 
 <button onclick="sendShip(shipsArray)">"Ready</button>
+</span>
 
 <p id="turnOpponent"></p>
 <div id="shipLocationGrid">
 </div>
+
 <p>Salvo Location</p>
 
 <button onclick="placingSalvos()">Place Salvoes</button>
@@ -91,7 +123,6 @@
 
 <p id="turnPlayer"></p>
 <div id="salvoLocationGrid"></div>
-
 
 
 </body>
