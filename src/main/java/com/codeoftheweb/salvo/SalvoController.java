@@ -37,7 +37,6 @@ public class SalvoController {
     private SalvoRepository salvoRepository;
 
 
-
     @RequestMapping("/games_view")
     public List<Game> getAll() {
 
