@@ -163,7 +163,7 @@ function joinExistingGame(email, gameId) {
 
 function displayGameAndOpponentInformations (gameId, playerId) {
 
-    $.get("http://localhost:8080/api/games_view/" + gameId).done(function(data) {
+    $.get("/api/games_view/" + gameId).done(function(data) {
         let myData = JSON.stringify(data);
         let myArray = JSON.parse(myData)
           myArray.gamePlayers.forEach(gamePlayer => {
@@ -206,7 +206,7 @@ function displayGameAndOpponentInformations (gameId, playerId) {
 
  function loadPlayerScore() {
 
-         $.get("http://localhost:8080/api/players_view")
+         $.get("/api/players_view")
              .done(function (data) {
                  let myData = JSON.stringify(data, null, 2);
                  let myArray = JSON.parse(myData)

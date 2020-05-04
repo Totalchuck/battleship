@@ -25,7 +25,7 @@ let gameWon = false;
 
 
 function forbidOtherPlayers(username) {
-    $.get("http://localhost:8080/api/gamePlayer_view/" + gamePlayerId)
+    $.get("/api/gamePlayer_view/" + gamePlayerId)
         .then(function (data) {
             let myData = JSON.stringify(data);
             let myArray = JSON.parse(myData);
@@ -132,7 +132,7 @@ function mouseOverPositionShip(horizontal) {
 
 //PlacingShipsDrawing
 function drawShips(gameId) {
-    $.get("http://localhost:8080/api/gamePlayer_view/" + gameId)
+    $.get("/api/gamePlayer_view/" + gameId)
         .then(function (data) {
             let myData = JSON.stringify(data);
             let myArray = JSON.parse(myData);
@@ -452,7 +452,7 @@ function changingColorBlue(x) {
 
 //send one Ship Array to Backend
 function placeShip(shipType, location, horizontal) {
-    $.post("http://localhost:8080/api/games/players/" + (gamePlayerId - 1) + "/ships", {
+    $.post("/api/games/players/" + (gamePlayerId - 1) + "/ships", {
             email: username,
             gamePlayerId: gamePlayerId,
             shipType: shipType,
@@ -486,7 +486,7 @@ function placingSalvos(location) {
 
 //send one salvo Array to the backend
 function placeSalvos(locations) {
-    $.post("http://localhost:8080/api/games/players/" + (gameId) + "/" + (gamePlayerId) + "/salvos", {
+    $.post("/api/games/players/" + (gameId) + "/" + (gamePlayerId) + "/salvos", {
         email: username,
         gamePlayerId: gamePlayerId,
         locations: locations
@@ -497,7 +497,7 @@ function placeSalvos(locations) {
 
 //check if the salvo actually hit a ship
 function salvosHit(locations) {
-    $.post("http://localhost:8080/api/games/players/" + (gameId) + "/" + gamePlayerId + "/salvos", {
+    $.post("/api/games/players/" + (gameId) + "/" + gamePlayerId + "/salvos", {
         locations: locations
     }).then(response =>
         response.substring(2, response.length - 1).replace(/ /g, "").split(",").forEach(location =>
@@ -521,7 +521,7 @@ function sendSalvos(salvosArray) {
 
 //Fetch position of the player ship and Salvo from the backend to display them
 function displayPlayerShipsAndSalvo(gameId) {
-    $.get("http://localhost:8080/api/gamePlayer_view/" + gameId)
+    $.get("/api/gamePlayer_view/" + gameId)
         .then(function (data) {
             let myData = JSON.stringify(data);
             let myArray = JSON.parse(myData);
@@ -582,7 +582,7 @@ function displayPlayerShipsAndSalvo(gameId) {
 
 //grab data from "game_view" and look for the opponent by elimiatating the player from the loop
 function displayGameAndOpponentInformations(gameId, playerId) {
-    $.get("http://localhost:8080/api/games_view/" + gameId).then(function (data) {
+    $.get("/api/games_view/" + gameId).then(function (data) {
         let myData = JSON.stringify(data);
         let myArray = JSON.parse(myData)
 
@@ -619,7 +619,7 @@ function getParameterByName(name, url) {
 }
 
 function getGameId() {
-    $.get("http://localhost:8080/api/gamePlayer_view/" + gamePlayerId)
+    $.get("/api/gamePlayer_view/" + gamePlayerId)
         .then(function (data) {
             let myData = JSON.stringify(data, null, 2);
             let myArray = JSON.parse(myData)
@@ -632,7 +632,7 @@ function getGameId() {
 }
 
 function getGamePlayerId() {
-    $.get("http://localhost:8080/api/gamePlayer_view/" + gamePlayerId)
+    $.get("/api/gamePlayer_view/" + gamePlayerId)
         .then(function (data) {
             let myData = JSON.stringify(data, null, 2);
             let myArray = JSON.parse(myData)
@@ -653,7 +653,7 @@ function getUserName() {
 
 function isGameOver() {
 
-    $.get("http://localhost:8080/api/games_view/" + gameId)
+    $.get("/api/games_view/" + gameId)
         .then(function (data) {
             let myData = JSON.stringify(data, null, 2);
             let myArray = JSON.parse(myData)

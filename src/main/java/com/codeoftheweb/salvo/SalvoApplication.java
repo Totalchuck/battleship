@@ -1,7 +1,6 @@
 package com.codeoftheweb.salvo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +34,7 @@ public class SalvoApplication {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
 
-	@Bean
+/*	@Bean
 	public CommandLineRunner initData(PlayerRepository playerRepository, GameRepository repositoryGame, GamePlayerRepository gamePlayerRepository,
 									  ShipRepository shipRepository, SalvoRepository salvoRepository, ScoreRepository scoreRepository) {
 
@@ -116,7 +115,7 @@ public class SalvoApplication {
 
 	}
 
-
+*/
 }
 
 
