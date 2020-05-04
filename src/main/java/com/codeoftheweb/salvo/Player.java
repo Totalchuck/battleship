@@ -2,7 +2,7 @@ package com.codeoftheweb.salvo;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jdk.internal.net.http.common.Utils;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
