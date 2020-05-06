@@ -184,14 +184,13 @@ public class SalvoController {
     //Add a salvo with its locations to a gamePlayer
     @RequestMapping(path = "/games/players/{gamesId}/{gamePlayerId}/salvos", method = RequestMethod.POST)
     public ResponseEntity<String> placeSalvos(@RequestParam String email, @PathVariable long gamePlayerId, @PathVariable long gamesId, @RequestParam List<String> locations) {
-
         GamePlayer myOpponent = getOppositeGamePlayer(gamesId, gamePlayerId);
         GamePlayer thePlayer = gamePlayerRepository.findById(gamesId).get();
 
         List listSalvosHit = new ArrayList();
 
         List<String> shipsSunk = new ArrayList<>();
-
+        System.out.println(Math.sqrt(Math.pow(thePlayer.getOpponentTurn() - thePlayer.getTurnGame(),2) ));
 
         if (email.isEmpty()) {
             return new ResponseEntity<>("No name given", HttpStatus.UNAUTHORIZED);
@@ -215,7 +214,6 @@ public class SalvoController {
                     ship.isTheShipSunk(thePlayer.getSalvoHitLocations());
                 }
             })));
-
 
             //add the opponent sunk ship to an array in the class gamePlayer
             thePlayer.getOpponentShipsSunk().clear();
