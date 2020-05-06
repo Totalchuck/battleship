@@ -165,16 +165,16 @@ public class SalvoController {
 
     //add a ship with its locations to a gamePlayer
     @RequestMapping(path = "/games/players/{gamePlayerId}/ships", method = RequestMethod.POST)
-    public ResponseEntity<String> placeShips(@RequestParam String email, @PathVariable int gamePlayerId, @RequestParam String shipType, @RequestParam List<String> location, @RequestParam boolean horizontal) {
+    public ResponseEntity<String> placeShips(@RequestParam String email, @PathVariable long gamePlayerId, @RequestParam String shipType, @RequestParam List<String> location, @RequestParam boolean horizontal) {
         if (email.isEmpty()) {
             return new ResponseEntity<>("No name given", HttpStatus.UNAUTHORIZED);
-        } else if (gamePlayerRepository.findAll().get(gamePlayerId) == null) {
+        } else if (gamePlayerRepository.findById(gamePlayerId) == null) {
             return new ResponseEntity<>("This GamePlayer Id does not exist", HttpStatus.UNAUTHORIZED);
         }
 
         Ship newShip = new Ship(shipType, location, horizontal);
 
-        newShip.setGamePlayer(gamePlayerRepository.findAll().get(gamePlayerId));
+        newShip.setGamePlayer(gamePlayerRepository.findById(gamePlayerId).get());
 
         shipRepository.save(newShip);
         return new ResponseEntity<>("Ship added", HttpStatus.CREATED);
@@ -185,7 +185,7 @@ public class SalvoController {
     @RequestMapping(path = "/games/players/{gamesId}/{gamePlayerId}/salvos", method = RequestMethod.POST)
     public ResponseEntity<String> placeSalvos(@RequestParam String email, @PathVariable long gamePlayerId, @PathVariable long gamesId, @RequestParam List<String> locations) {
         GamePlayer myOpponent = getOppositeGamePlayer(gamesId, gamePlayerId);
-        GamePlayer thePlayer = gamePlayerRepository.findById(gamePlayerId).get();
+        GamePlayer thePlayer = gamePlayerRepository.findById(gamesId).get();
 
         List listSalvosHit = new ArrayList();
 
