@@ -474,7 +474,7 @@ function placeShip(shipType, location, horizontal) {
 //check if the Array of Ships contains all the ship and send all of them to the backend(with placeShip())
 function sendShip(shipsArray) {
     if (shipsArray.length == 5) {
-
+        window.location.reload()
         shipsArray.forEach(ship => {
             placeShip(ship[0], ship[1].toString(), horizontal)
         })
