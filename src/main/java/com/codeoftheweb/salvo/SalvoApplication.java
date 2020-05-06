@@ -149,13 +149,13 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
-				.antMatchers("/api/games").permitAll()
-				.antMatchers("/api/leader_board").permitAll()
-				.antMatchers("/web/games.html").permitAll()
+				.antMatchers("/api/games", "/api/leader_board", "/web/games.html" ).permitAll()
 				.antMatchers("/web/games.js").permitAll()
 				.antMatchers("/web/game.html").permitAll()
 				.antMatchers("/web/index.html").permitAll()
+				.antMatchers("/h2-console/**").permitAll()
 				.antMatchers("/web/style/style.css").permitAll()
+				.antMatchers("/web/Pictures/**").permitAll()
 				.antMatchers("/web/script/games.js").permitAll()
 				.antMatchers("/api/players").permitAll()
 				.antMatchers("/api/gamePlayer_view").permitAll()
@@ -163,9 +163,9 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers("/rest/*").permitAll()
 				.antMatchers("/api/login").permitAll()
 				.antMatchers("/username").permitAll()
-				.anyRequest().fullyAuthenticated()
-				.and()
-				.formLogin()
+				.anyRequest().fullyAuthenticated();
+
+				http.formLogin()
 				.usernameParameter("email")
 				.passwordParameter("password")
 				.loginPage("/api/login");
@@ -176,6 +176,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		http.formLogin().successHandler((request, response, authentication) -> clearAuthenticationAttribute(request));
 		http.formLogin().failureHandler((request, response, exception) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED));
 		http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
+		http.headers().frameOptions().disable();
 	}
 
 	private void clearAuthenticationAttribute(HttpServletRequest request){

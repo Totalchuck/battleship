@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>game</title>
-    <style>/* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126
+/* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126
   License: none (public domain)
 */
 
@@ -120,8 +114,8 @@ section {
 }
 
 body {
-
-  background-image: url("Pictures/Background.png");
+  font-family: cartoon;
+  background-image: url("/Pictures/Background.png");
   background-size: cover;
 }
 
@@ -147,7 +141,7 @@ body {
 }
 
 #shipLocationGrid {
-  background-image: url("Pictures/sea.png");
+  background-image: url("/Pictures/sea.png");
 }
 
 #shipSelectionPannel {
@@ -169,16 +163,7 @@ body {
 
 
 #salvoLocationGrid {
-  background-image: url("Pictures/sea.png");
-}
-
-#gameInfo {
-background-color: white;
-text-align:center;
-display: flex;
-justify-content:center;
-margin: 0px auto;
-width:300px;
+  background-image: url("/Pictures/sea.png");
 }
 
 
@@ -261,55 +246,4 @@ div[cruiser="midVer"] {
 
 div[cruiser="backVer"] {
   background-image: url("Pictures/Cruiser/cruiserBackVer.png");
-}</style>
-</head>
-
-<body id="body">
-    <button onclick="logOut()" id="logOut" type="submit">Log out</button>
-<p id="gameInfo"></p>
-
-    <div class="middle">
-        <div class="shipContainer">
-            <img class="shipLocationIcon" src="Pictures/shipsLocations.png" alt="shipLocationPict">
-
-            <span id="shipSelectionPannel">
-                <span><button onclick="placingShip('carrier')" ondblclick="replacingShip('carrier')"
-                        id="carrier">Carrier</button></span>
-                <span><button onclick="placingShip('battleship')" ondblclick="replacingShip('battleship')"
-                        id="battleship">Battleship</button></span>
-                <span><button onclick="placingShip('cruiser')" ondblclick="replacingShip('cruiser')"
-                        id="cruiser">Cruiser</button></span>
-                <span><button onclick="placingShip('submarine')" ondblclick="replacingShip('submarine')"
-                        id="submarine">Submarine</button></span>
-                <span><button onclick="placingShip('destroyer')" ondblclick="replacingShip('destroyer') "
-                        id="destroyer">Destroyer</button></span>
-
-                <button onclick="sendShip(shipsArray)">"Ready</button>
-            </span>
-
-            <p id="turnOpponent"></p>
-            <div id="shipLocationGrid">
-            </div>
-        </div>
-
-        <div class="salvoContainer">
-            <img class="salvoesLocationIcon" src="Pictures/salvoesLocations.png" alt="salvoesLocPict">
-            <span class="salvoSelectionPannel">
-                <button id="placingSalvosBtn" onclick="placingSalvos()">Place Salvoes (4)</button>
-
-                <button onclick="sendSalvos(salvosArray)">Shoot !</button>
-            </span>
-
-
-            <p id="turnPlayer"></p>
-            <div id="salvoLocationGrid"></div>
-        </div>
-
-    </div>
-</body>
-
-
-<script src="https://code.jquery.com/jquery-2.2.0.js"></script>
-<script src="game.js"></script>
-
-</html>
+}

@@ -5,13 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.xml.stream.Location;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 public class Ship {
@@ -82,7 +77,7 @@ public class Ship {
         {
             if (location.equals(salvoLocation)) {
               remainingLife--;
-                System.out.println(salvoLocation+ "correspond to a place in the ship there is life" + remainingLife);
+
             }}));
 
         if (remainingLife == 0) {

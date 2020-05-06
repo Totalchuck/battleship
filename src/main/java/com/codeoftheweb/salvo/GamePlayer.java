@@ -45,6 +45,8 @@ public class GamePlayer {
 
     private boolean gameWon;
 
+    private boolean gameTie;
+
     private int turnGame;
 
     private int remainingShips;
@@ -211,6 +213,10 @@ public class GamePlayer {
 
     public void wonGame() {
         this.gameWon = true;
+    }
+
+    public void tieGame() {
+        this.gameTie = true;
     }
 
     public int getRemainingShips() {

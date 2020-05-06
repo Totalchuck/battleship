@@ -61,6 +61,7 @@ function drawGrid(container, grid) {
         for (let j = 0; j < numGrip.length; j++) {
             let newSquare = document.createElement("div")
             newSquare.setAttribute("id", grid + alphaGrid[i] + numGrip[j])
+            newSquare.setAttribute("square", "squareGrid")
             newSquare.innerHTML = alphaGrid[i] + numGrip[j]
             arrayGrid.push(alphaGrid[i] + numGrip[j])
             newSpan.appendChild(newSquare)
@@ -72,6 +73,8 @@ function drawGrid(container, grid) {
 function mouseOverPositionSalvo() {
 
     if (allShipPlaced && allShipsOpponentPlaced) {
+        document.getElementById("placingSalvosBtn").setAttribute("class", "green")
+
         arrayGrid.forEach(location =>
             document.getElementById("salvo" + location).setAttribute("onmouseover", "changingColorBlue(this)"))
 
@@ -80,10 +83,11 @@ function mouseOverPositionSalvo() {
 
         arrayGrid.forEach(location =>
             document.getElementById("salvo" + location).setAttribute("onClick", "placedSalvo(this)"))
-    } else if (!allShipPlaced){
-             alert("Please place all your ship")
-    } else if (!allShipsOpponentPlaced){
-        alert("Please wait for your opponent to place his ships")}
+    } else if (!allShipPlaced) {
+        alert("Please place all your ship")
+    } else if (!allShipsOpponentPlaced) {
+        alert("Please wait for your opponent to place his ships")
+    }
 
 
 }
@@ -99,10 +103,10 @@ function placedSalvo(x) {
         salvosArray.push(x.id.slice(5, 8))
 
     } else if (yellowNum >= 4) {
-    alert("too many salvos")
+        alert("too many salvos")
         console.log("too many salvoes")
     } else {
-    alert ("you can't place two salvoes at the same place")
+        alert("you can't place two salvoes at the same place")
         console.log("you can't place two salvoes at the same place")
     }
 
@@ -438,7 +442,7 @@ function changingColorBlue(x) {
                 placingShipPositionAllowed = true;
             }
         }
-        
+
     } else {
         x.setAttribute("class", "blue")
         placingShipPositionAllowed = true;
@@ -574,6 +578,16 @@ function displayPlayerShipsAndSalvo(gameId) {
 
             displayGameAndOpponentInformations(myArray.gameId, myArray.id)
 
+            console.log(myArray.opponentName)
+
+            if (myArray.opponentName == "No Opponent") {
+            document.getElementById("gameInfo").innerHTML = "Waiting for an opponent"
+            } else {
+            document.getElementById("gameInfo").innerHTML = "Playing against " + myArray.opponentName
+            }
+
+
+
 
 
         })
@@ -667,6 +681,8 @@ function isGameOver() {
 
         })
 }
+
+setTimeout(function(){ window.location.reload();; }, 100000);
 
 
 

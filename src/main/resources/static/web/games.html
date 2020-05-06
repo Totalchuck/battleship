@@ -1,42 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>games</title>
+
+    <style>
+        /* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126
+  License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+.header {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    float: right;
+    justify-content: space-evenly;
+    text-align: center;
+
+}
+
+.middle {
+
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: space-evenly;
+
+}
+
+body {
+    background-image: url(Pictures/Background.png);
+    background-size: cover;
+}
+    </style>
 </head>
+
 <body>
-<div id="loginContainer">
-    <label for="email"><b>Username</b></label>
-    <input type="text" placeholder="Enter Email" id="email" name="email" required>
 
-    <label for="password"><b>password</b></label>
-    <input type="text" placeholder="Enter password" id="password" name="password" required>
+    <div class="header">
 
-    <button  onclick="logIn()" id="logIn" type="submit">Login</button>
+        <img src="Pictures/title.png" alt="title">
 
-    <button onclick="signUp()" id="signUp" type="submit">Sign up</button>
+        <div id="loginContainer" class="login">
+            <input type="text" placeholder="Enter Email" id="email" name="email" required>
 
-</div>
-<button onclick="logOut()" id="logOut" type="submit">Log out</button>
+            <input type="text" placeholder="Enter password" id="password" name="password" required>
 
-<button onclick="createGame()" id="createGame" type="submit">Create Game</button>
+            <button onclick="logIn()" id="logIn" type="submit">Login</button>
+
+            <button onclick="signUp()" id="signUp" type="submit">Sign up</button>
+
+            <button onclick="logOut()" id="logOut" type="submit">Log out</button>
+
+        </div>
+    </div>
+    <div class="middle">
+
+        <div>
+            <button onclick="createGame()" id="createGame" type="submit">Create Game</button>
+            <ol id="output" style="list-style-type:none;"></ol>
+        </div>
 
 
-<p>Salvo !!!!</p>
-<ol id="output">
-</ol>
+        <div>
+            <p>Leaderboard</p>
+            <table id="table">
+                <tr>
+                    <th>name</th>
+                    <th>score</th>
+                </tr>
+                <tr>
+
+                </tr>
+            </table>
+        </div>
+
+
+    </div>
+
+
 </body>
 
-<p>scores</p>
-<table id="table">
-    <tr>
-        <th>name</th>
-        <th>score</th>
-    </tr>
-    <tr>
 
-    </tr>
-</table>
+
 
 
 

@@ -209,17 +209,24 @@ public class SalvoController {
 
                 });}});
 
-            //check if the Player won the game and end the game
-            if(thePlayer.getOpponentShipsSunk().size() == 17) {
+            //check if the Player won the game of tie and end the game
+            if(thePlayer.getOpponentShipsSunk().size() == 17 && thePlayer.getRemainingShips() == 0) {
+                thePlayer.tieGame();
+                gameRepository.getOne(gamesId).setGameOver(true);
+                Score tie = new Score(0.5);
+                tie.setPlayer(thePlayer.getPlayer());
+                scoreRepository.save(tie);
+            //check if the Player has no remaining ship and the game is over
+            } else if(thePlayer.getRemainingShips() == 0 ) {
+                gameRepository.getOne(gamesId).setGameOver(true);
+            } else if (thePlayer.getOpponentShipsSunk().size() == 17 ) {
                 thePlayer.wonGame();
                 gameRepository.getOne(gamesId).setGameOver(true);
+                Score won = new Score(1);
+                won.setPlayer(thePlayer.getPlayer());
+                scoreRepository.save(won);
             }
-
-           //check if the Player has no remaining ship and the game is over
-           if (thePlayer.getRemainingShips() == 0 ) {
-                gameRepository.getOne(gamesId).setGameOver(true);
-            }
-
+          
 
 
             gameRepository.save(gameRepository.getOne(gamesId));
@@ -237,7 +244,7 @@ public class SalvoController {
 
 
 
-    }
+    };
 
     //function to look for the opposite gamePlayer
     @RequestMapping("/gamePlayer/{gamesId}/{gamePlayerId}/opponent")

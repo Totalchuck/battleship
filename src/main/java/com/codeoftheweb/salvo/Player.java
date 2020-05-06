@@ -98,6 +98,10 @@ public class Player {
         return password;
     }
 
+    public void addScore(Score score) {
+        this.score.add(score);
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }

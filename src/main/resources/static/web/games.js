@@ -113,7 +113,11 @@ function joinExistingGame(email, gameId) {
         ul.appendChild(li);
         li.setAttribute("id", gameId)
         displayGameAndOpponentInformations(gameId, gamePlayerId)
-        li.innerHTML = "game with Id nr " + gameId + " created at playing against "  + opponent;
+        if (opponent == "No Opponent") {
+            li.innerHTML = "game" + gameId + "waiting for an opponent"
+        } else {
+        li.innerHTML = "game" + gameId + " created at playing against "  + opponent;}
+
 }
 
     function createJoinGameBtn (gameId) {
@@ -236,6 +240,8 @@ function displayGameAndOpponentInformations (gameId, playerId) {
 
 
     getUserName()
+
+    setTimeout(function(){ window.location.reload();; }, 100000);
 
 
     getGamePlayerInformation()
