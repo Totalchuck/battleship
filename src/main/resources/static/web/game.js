@@ -458,7 +458,7 @@ function changingColorBlue(x) {
 
 //send one Ship Array to Backend
 function placeShip(shipType, location, horizontal) {
-    $.post("/api/games/players/" + (gamePlayerId - 1) + "/ships", {
+    $.post("/api/games/players/" + (gamePlayerId) + "/ships", {
             email: username,
             gamePlayerId: gamePlayerId,
             shipType: shipType,
