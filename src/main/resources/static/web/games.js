@@ -196,7 +196,7 @@ function displayGameAndOpponentInformations (gameId, playerId) {
 
     function getUserName() {
 
-             $.get("/username")
+             $.get("/api/username")
                 .then(function (data) {
                     let myData = JSON.stringify(data, null, 2);
                     let myArray = JSON.parse(myData)
