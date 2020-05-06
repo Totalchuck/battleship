@@ -33,9 +33,6 @@ function forbidOtherPlayers(username) {
 
             if (myArray.playerMail != username) {
                 document.body.innerHTML = "You are trying to cheat !!"
-            } else {
-                console.log("right Player")
-            }
 
         })
 }
@@ -519,7 +516,7 @@ function sendSalvos(salvosArray) {
         salvosHit(salvosArray.toString())
         salvosArray.length = 0;
         displayPlayerShipsAndSalvo(gameId)
-        window.location.reload();
+
     } else {
         console.log("please place all the salvos")
     }
@@ -700,7 +697,7 @@ function isGameOver() {
         })
 }
 
-setTimeout(function(){ window.location.reload();; }, 100000);
+setTimeout(function(){ window.location.reload();; }, 1000000000);
 
 
 
