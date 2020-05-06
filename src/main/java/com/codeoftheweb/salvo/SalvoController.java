@@ -83,6 +83,7 @@ public class SalvoController {
     @RequestMapping(value = "/username", method = RequestMethod.GET)
     @ResponseBody
     public Player currentUserName(Principal principal) {
+
         return playerRepository.findByEmail(principal.getName());
     }
 
