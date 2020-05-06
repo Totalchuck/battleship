@@ -37,6 +37,8 @@ function forbidOtherPlayers(username) {
         })
 }
 
+}
+
 //log Out
 
 document.getElementById("logOut").onclick = function () {
