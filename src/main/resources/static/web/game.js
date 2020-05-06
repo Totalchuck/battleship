@@ -20,6 +20,7 @@ let allShipsOpponentPlaced = false;
 let responseSalvos = null;
 let gameOver = false;
 let gameWon = false;
+let gameTie = false;
 
 
 
@@ -87,6 +88,7 @@ function mouseOverPositionSalvo() {
         alert("Please place all your ship")
     } else if (!allShipsOpponentPlaced) {
         alert("Please wait for your opponent to place his ships")
+        window.location.reload()
     }
 
 
@@ -290,15 +292,15 @@ function transparent(x) {
         x.setAttribute("cruiser", "transparent")
         x.setAttribute("class", "transparent")
         x.setAttribute("middleShip", "false")
-        document.getElementById("ship" + arrayGrid[index - 10]).setAttribute("cruiser", "transparent")
-        document.getElementById("ship" + arrayGrid[index + 10]).setAttribute("cruiser", "transparent")
+        //document.getElementById("ship" + arrayGrid[index - 10]).setAttribute("cruiser", "transparent")
+       //document.getElementById("ship" + arrayGrid[index + 10]).setAttribute("cruiser", "transparent")
         document.getElementById("ship" + arrayGrid[index - 10]).setAttribute("class", "transparent")
         document.getElementById("ship" + arrayGrid[index + 10]).setAttribute("class", "transparent")
     } else if (!horizontal && shipSelection == "cruiser") {
         x.setAttribute("class", "transparent")
         x.setAttribute("middleShip", "false")
-        document.getElementById("ship" + arrayGrid[index - 1]).setAttribute("cruiser", "transparent")
-        document.getElementById("ship" + arrayGrid[index + 1]).setAttribute("cruiser", "transparent")
+        //document.getElementById("ship" + arrayGrid[index - 1]).setAttribute("cruiser", "transparent")
+       // document.getElementById("ship" + arrayGrid[index + 1]).setAttribute("cruiser", "transparent")
         document.getElementById("ship" + arrayGrid[index - 1]).setAttribute("class", "transparent")
         document.getElementById("ship" + arrayGrid[index + 1]).setAttribute("class", "transparent")
     }
@@ -310,7 +312,7 @@ function transparent(x) {
         document.getElementById("ship" + arrayGrid[index + 10]).setAttribute("class", "transparent")
     } else if (!horizontal && shipSelection == "submarine") {
         x.setAttribute("class", "transparent")
-        x.setAttribute("middleShip", "false")
+       x.setAttribute("middleShip", "false")
         document.getElementById("ship" + arrayGrid[index - 1]).setAttribute("class", "transparent")
         document.getElementById("ship" + arrayGrid[index + 1]).setAttribute("class", "transparent")
     }
@@ -396,11 +398,11 @@ function changingColorBlue(x) {
                 x.setAttribute("class", "red")
                 placingShipPositionAllowed = false;
             } else {
-                x.setAttribute("cruiser", "midHor")
+                //x.setAttribute("cruiser", "midHor")
                 x.setAttribute("class", "blue")
                 x.setAttribute("middleShip", "true")
-                document.getElementById("ship" + arrayGrid[index - 10]).setAttribute("cruiser", "frontHor")
-                document.getElementById("ship" + arrayGrid[index + 10]).setAttribute("cruiser", "backHor")
+               // document.getElementById("ship" + arrayGrid[index - 10]).setAttribute("cruiser", "frontHor")
+                //document.getElementById("ship" + arrayGrid[index + 10]).setAttribute("cruiser", "backHor")
                 document.getElementById("ship" + arrayGrid[index - 10]).setAttribute("class", "blue")
                 document.getElementById("ship" + arrayGrid[index + 10]).setAttribute("class", "blue")
                 placingShipPositionAllowed = true;
@@ -414,9 +416,9 @@ function changingColorBlue(x) {
                 x.setAttribute("middleShip", "true")
                 document.getElementById("ship" + arrayGrid[index - 1]).setAttribute("class", "blue")
                 document.getElementById("ship" + arrayGrid[index + 1]).setAttribute("class", "blue")
-                x.setAttribute("cruiser", "midVer")
-                document.getElementById("ship" + arrayGrid[index - 1]).setAttribute("cruiser", "frontVer")
-                document.getElementById("ship" + arrayGrid[index + 1]).setAttribute("cruiser", "backVer")
+                //x.setAttribute("cruiser", "midVer")
+                //document.getElementById("ship" + arrayGrid[index - 1]).setAttribute("cruiser", "frontVer")
+                //document.getElementById("ship" + arrayGrid[index + 1]).setAttribute("cruiser", "backVer")
                 placingShipPositionAllowed = true;
             }
         }
@@ -474,7 +476,7 @@ function sendShip(shipsArray) {
     if (shipsArray.length == 5) {
         window.location.reload();
         shipsArray.forEach(ship => {
-            placeShip(ship[0], ship[1].toString(), true)
+            placeShip(ship[0], ship[1].toString(), horizontal)
         })
 
         document.getElementById("shipSelectionPannel").innerHTML = null;
@@ -640,7 +642,8 @@ function getGameId() {
 
             gameId = myArray.gameId;
             gameWon = myArray.gameWon;
-            console.log(myArray.gameWon)
+            gameTie = myArray.gameTie;
+
             isGameOver()
         })
 }
@@ -674,10 +677,25 @@ function isGameOver() {
 
             gameOver = myArray.gameOver;
 
-            if (gameOver && gameWon) {
-                document.body.innerHTML = "Game Over you won !!!"
-            } else if (gameOver && !gameWon)
-                document.body.innerHTML = "Game Over you lost !!!"
+            console.log("gameOver" + gameOver + "gameWon" + gameWon + "gameTie" + gameTie)
+
+            if (gameOver && gameWon && !gameTie) {
+                document.getElementById("middle").innerHTML = null
+                let gameWonPict = document.createElement("img")
+                gameWonPict.setAttribute("src", "Pictures/victory.png")
+                document.getElementById("middle").appendChild(gameWonPict)
+            } else if (gameOver && !gameWon && !gameTie) {
+                document.getElementById("middle").innerHTML = null
+                let gameLostPict = document.createElement("img")
+                gameLostPict.setAttribute("src", "Pictures/defeat.png")
+                document.getElementById("middle").appendChild(gameLostPict)
+            }   else if (gameOver && gameTie && !gameWon) {
+                document.getElementById("middle").innerHTML = null
+                let gameTiePict = document.createElement("img")
+                gameTiePict.setAttribute("src", "Pictures/tie.png")
+                document.getElementById("middle").appendChild(gameTiePict)
+            }
+
 
         })
 }

@@ -123,6 +123,7 @@ public class SalvoApplication {
 
 
 @Configuration
+@EnableWebSecurity
 class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
 	@Autowired

@@ -153,7 +153,7 @@ public class SalvoController {
             return new ResponseEntity<>("This GamePlayer Id does not exist", HttpStatus.UNAUTHORIZED);
         }
 
-        Ship newShip = new Ship(shipType, location);
+        Ship newShip = new Ship(shipType, location, horizontal);
 
         newShip.setGamePlayer(gamePlayerRepository.findAll().get(gamePlayerId));
 
@@ -177,7 +177,7 @@ public class SalvoController {
             return new ResponseEntity<>("No name given", HttpStatus.UNAUTHORIZED);
         } else if (gamePlayerRepository.findById(gamePlayerId) == null) {
             return new ResponseEntity<>("This GamePlayer Id does not exist", HttpStatus.UNAUTHORIZED);
-        } else if ( thePlayer.getOpponentTurn() >= thePlayer.getTurnGame()){
+        } else if ((thePlayer.getOpponentShipsSunk().size() != 17 || thePlayer.getRemainingShips() != 0) && thePlayer.getOpponentTurn() >= thePlayer.getTurnGame()){
 
 
             Salvo newSalvo = new Salvo(locations, thePlayer.getTurnGame());
@@ -210,22 +210,32 @@ public class SalvoController {
                 });}});
 
             //check if the Player won the game of tie and end the game
-            if(thePlayer.getOpponentShipsSunk().size() == 17 && thePlayer.getRemainingShips() == 0) {
-                thePlayer.tieGame();
-                gameRepository.getOne(gamesId).setGameOver(true);
-                Score tie = new Score(0.5);
-                tie.setPlayer(thePlayer.getPlayer());
-                scoreRepository.save(tie);
-            //check if the Player has no remaining ship and the game is over
-            } else if(thePlayer.getRemainingShips() == 0 ) {
-                gameRepository.getOne(gamesId).setGameOver(true);
-            } else if (thePlayer.getOpponentShipsSunk().size() == 17 ) {
-                thePlayer.wonGame();
-                gameRepository.getOne(gamesId).setGameOver(true);
-                Score won = new Score(1);
-                won.setPlayer(thePlayer.getPlayer());
-                scoreRepository.save(won);
+
+            if (thePlayer.getOpponentShipsSunk().size() == 17 && thePlayer.getTurnGame() == myOpponent.getTurnGame() || thePlayer.getRemainingShips() == 0 && thePlayer.getTurnGame() == myOpponent.getTurnGame()) {
+
+                if(thePlayer.getOpponentShipsSunk().size() == 17 && thePlayer.getRemainingShips() == 0) {
+                    thePlayer.tieGame();
+                    myOpponent.tieGame();
+                    gameRepository.getOne(gamesId).setGameOver(true);
+                    Score tie = new Score(0.5);
+                    Score tieOpp = new Score(0.5);
+                    tieOpp.setPlayer(myOpponent.getPlayer());
+                    tie.setPlayer(thePlayer.getPlayer());
+                    scoreRepository.save(tie);
+                    scoreRepository.save(tieOpp);
+                    //check if the Player has no remaining ship and the game is over
+                } else if(thePlayer.getRemainingShips() == 0 ) {
+                    gameRepository.getOne(gamesId).setGameOver(true);
+                } else if (thePlayer.getOpponentShipsSunk().size() == 17 ) {
+                    thePlayer.wonGame();
+                    gameRepository.getOne(gamesId).setGameOver(true);
+                    Score won = new Score(1);
+                    won.setPlayer(thePlayer.getPlayer());
+                    scoreRepository.save(won);
+                }
             }
+
+
           
 
 

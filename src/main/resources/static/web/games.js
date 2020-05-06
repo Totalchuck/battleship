@@ -19,13 +19,16 @@ let opponentName = []
         console.log(myArray)
 
 
+
+
         myArray.forEach(game =>
             game.gamePlayers.forEach(gamePlayer =>
-                { if (gamePlayer.playerMail == username) {
+                { if (gamePlayer.playerMail == username && !game.gameOver) {
                         displayGameAndOpponentInformations(gamePlayer.Id, gamePlayer.id)
 
                         createNewLi(gamePlayer.gameId,gamePlayer.Id, gamePlayer.opponentName);
                         let GP = gamePlayer.id;
+
                         createRejoinGameBtn(GP)}
 
 
@@ -61,6 +64,8 @@ document.getElementById("signUp").onclick = function() {signUp(document.getEleme
 
 
 }
+
+
 
 //log Out
 
@@ -132,12 +137,15 @@ function joinExistingGame(email, gameId) {
     }
 
      function createRejoinGameBtn (gamePlayerId) {
-        let a = document.createElement("a")
-        ul.appendChild(a);
-        a.innerHTML = "Rejoin game" + gamePlayerId
-        a.setAttribute("id", gamePlayerId)
-        a.setAttribute("href", '/web/game.html?gp=' + gamePlayerId)
-        }
+
+    let a = document.createElement("a")
+                             ul.appendChild(a);
+                             a.innerHTML = "Rejoin game" + gamePlayerId
+                             a.setAttribute("id", gamePlayerId)
+                             a.setAttribute("href", '/web/game.html?gp=' + gamePlayerId)
+
+
+          }
 
     function createTable(playerName, score) {
         let tr = document.createElement("tr")

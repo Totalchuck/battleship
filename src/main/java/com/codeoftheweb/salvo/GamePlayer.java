@@ -219,6 +219,10 @@ public class GamePlayer {
         this.gameTie = true;
     }
 
+    public boolean getGameTie() {
+        return this.gameTie;
+    }
+
     public int getRemainingShips() {
         return this.remainingShips;
     }

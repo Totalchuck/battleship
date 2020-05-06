@@ -193,7 +193,11 @@ span {
   display: inline-block;
 }
 
+.instruction {
+    width: 400px;
+      margin: 40px 0px 40px 200px;
 
+}
 
 .red {
   background: red;
@@ -261,14 +265,18 @@ div[cruiser="midVer"] {
 
 div[cruiser="backVer"] {
   background-image: url("Pictures/Cruiser/cruiserBackVer.png");
-}</style>
+
+}
+
+</style>
 </head>
 
 <body id="body">
     <button onclick="logOut()" id="logOut" type="submit">Log out</button>
+    <button><a href="/web/games.html"> Main Menu </a></button>
 <p id="gameInfo"></p>
 
-    <div class="middle">
+    <div class="middle" id="middle">
         <div class="shipContainer">
             <img class="shipLocationIcon" src="Pictures/shipsLocations.png" alt="shipLocationPict">
 
@@ -306,6 +314,7 @@ div[cruiser="backVer"] {
         </div>
 
     </div>
+    <img src="Pictures/instruction.png" alt="instruction" class="instruction">
 </body>
 
 

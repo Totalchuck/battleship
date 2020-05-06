@@ -29,6 +29,8 @@ public class Ship {
 
     private boolean sunk;
 
+    private boolean horizontal;
+
     private int remainingLife;
 
     public Ship() {
@@ -38,11 +40,12 @@ public class Ship {
         this.shipType = shipType;
     }
 
-    public Ship(String shipType, List<String> location)  {
+    public Ship(String shipType, List<String> location, Boolean horizontal)  {
         this.shipType = shipType;
         this.location = location;
         this.sunk=false;
         this.remainingLife = location.size();
+        this.horizontal= horizontal;
     }
 
 
@@ -84,6 +87,10 @@ public class Ship {
             sunk = true;
         }
         return sunk;
+    }
+
+    public boolean getHorizontal() {
+        return this.horizontal;
     }
 
     public int getRemainingLife() {
