@@ -4,6 +4,7 @@ package com.codeoftheweb.salvo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,9 +46,9 @@ public class SalvoController {
 
 
     @RequestMapping("/games_view/{gamesId}")
-    public Game getGame(@PathVariable int gamesId) {
+    public Game getGame(@PathVariable long gamesId) {
 
-        return gameRepository.findAll().get(gamesId - 1);
+        return gameRepository.getOne(gamesId);
     }
 
 
@@ -131,12 +132,30 @@ public class SalvoController {
 
     //Join an existing game
     @RequestMapping(path = "/game/{gameId}/players", method = RequestMethod.POST)
-    public ResponseEntity<String> joinExistingGame(@RequestParam String email, @PathVariable int gameId) {
-        if (email.isEmpty()) {
-            return new ResponseEntity<>("No name given", HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<String> joinExistingGame(Authentication authentication, @PathVariable long gameId) {
+        if (authentication == null) {
+            return new ResponseEntity<>("You should be logged in to enter the game", HttpStatus.UNAUTHORIZED);
         }
 
-        GamePlayer newGamePlayer = new GamePlayer(playerRepository.findByEmail(email), gameRepository.findAll().get(gameId - 1));
+        Game game = gameRepository.getOne(gameId);
+
+        if (game == null) {
+            return new ResponseEntity<>("This game doesn't exist", HttpStatus.UNAUTHORIZED);
+        }
+
+        Player player = playerRepository.findByEmail(authentication.getName());
+
+        GamePlayer gamePlayer = game.getGamePlayers().stream().filter(gP -> gP.getPlayer().getEmail() == authentication.getName()).findFirst().orElse(null);
+
+        if (game.getGamePlayers().size() == 2) {
+            return new ResponseEntity<>("Game is full", HttpStatus.UNAUTHORIZED);
+        }
+
+        if (game.getGamePlayers().size() == 1 && gamePlayer != null ) {
+            return new ResponseEntity<>("You already in the game", HttpStatus.UNAUTHORIZED);
+        }
+
+        GamePlayer newGamePlayer = new GamePlayer(player, game);
         gamePlayerRepository.save(newGamePlayer);
 
 
