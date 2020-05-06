@@ -5,10 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,12 +56,12 @@ public class SalvoController {
     }
 
     @RequestMapping("/gamePlayer_view/{gamesId}")
-    public Optional<GamePlayer> getGamePlayer(@PathVariable long gamesId) {
+    public Optional<GamePlayer> getGamePlayer(Authentication authentication, @PathVariable long gamesId) {
 
         GamePlayer myGamePlayer = gamePlayerRepository.findById(gamesId).get();
 
         if (myGamePlayer != null) {
-            if (loggedUser() == myGamePlayer.getPlayer()) {
+            if (authentication.getName() == myGamePlayer.getPlayer().getEmail()) {
                 return gamePlayerRepository.findById(gamesId);
             } else {
                 return null;
@@ -80,12 +78,7 @@ public class SalvoController {
 
 
 
-    @RequestMapping(value = "/username", method = RequestMethod.GET)
-    @ResponseBody
-    public Player currentUserName(Principal principal) {
 
-        return playerRepository.findByEmail(principal.getName());
-    }
 
 
     @RequestMapping("/players_view")
@@ -286,11 +279,18 @@ public class SalvoController {
     }
 
 
-    public Player loggedUser(){
+  /*  public Player loggedUser(){
         Principal principal = SecurityContextHolder.getContext().getAuthentication();
         Player myUser = currentUserName(principal);
         return myUser;
     }
+
+    @RequestMapping(value = "/username", method = RequestMethod.GET)
+    @ResponseBody
+    public Player currentUserName(Principal principal) {
+
+        return playerRepository.findByEmail(principal.getName());
+    } */
 
 
 }
